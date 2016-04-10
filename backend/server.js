@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw({ type: 'application/octet-stream',limit: '10mb'}));
 app.use(cookieParser());
+app.use(express.static('public'));
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', config.origin);
