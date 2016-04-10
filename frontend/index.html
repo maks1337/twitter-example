@@ -41,12 +41,10 @@
 
         </div>
 
-        
-
-        <div id="post-panel">
+        <div id="post-panel" style="display: none;">
             <textarea id="twitter-post" class="form-control" rows="3" maxlength="160" disabled placeholder="Post to Twitter!"></textarea>
-            <div class="panel panel-info">
-            <div class="panel-heading">Attach media</div>
+            <div id="media-panel" class="panel panel-info">
+            <div class="panel-heading">Attach image</div>
             <div id="attachment" class="panel-body" style="display:none;">
                 <input type="hidden" name="attachment"></input>
                 <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> <span class="filename"></span></button>
@@ -55,7 +53,6 @@
                 <p>Drop a file inside to post or click browse</p>
             </div>
             </div>
-
             <p id="post-status"></p>
             <button id="post-it" type="button" class="btn btn-primary btn-lg btn-block" disabled>Post It!</button>
         </div>
@@ -138,6 +135,7 @@
                 if(data.logged){
                     $('#sign-in').hide();
                     $('#welcome').show();
+                    $('#post-panel').show();
                     $('#welcome strong').html(data.logged);
                     $('#welcome img').attr('src',data.image);
                     $('#post-panel').children().prop('disabled',false);
