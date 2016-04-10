@@ -208,10 +208,15 @@
               files.each(function (file) {
                 file.event('done', function (xhr) {
 
+                  var result = JSON.parse(xhr.responseText);
+
+                  if(!result.name){
+                     alert('Error uploading ' + this.name);
+                     return;
+                  }
+
                   $('#zbasic').hide();
                   $('#attachment').show();
-
-                  var result = JSON.parse(xhr.responseText);
 
                   $('#attachment input').val(result.place);
                   $('#attachment .filename').html(result.name);
