@@ -149,7 +149,7 @@ router.post('/post', function(req, res,next) {
 router.post('/upload',function(req, res) {
 
 	var folder = Date.now();
-	var allowedformats = ['image/jpeg','image/png','image/gif','video/mp4','video/quicktime'];
+	var allowedformats = ['image/jpeg','image/png','image/gif'];
 
 	try {
 		fs.mkdirSync('./uploads/'+folder);
