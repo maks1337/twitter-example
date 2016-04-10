@@ -1,0 +1,91 @@
+#sign-in {
+	cursor:pointer;
+}
+
+.container {
+	max-width: 600px;
+	background: rgb(245,245,245);
+	
+}
+
+#welcome img {
+	margin-left:10px;
+}
+
+textarea {
+	margin-bottom: 20px;
+}
+
+#wrapper {
+	padding:20px;
+}
+
+#login-panel {
+	height:70px;
+}
+
+.spinner {
+  width: 25px;
+  height: 25px;
+  position: relative;
+  margin: 10px auto;
+}
+
+.double-bounce1, .double-bounce2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #333;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+#debug h1 {
+	margin:20px !important;
+}
+
+#tail { 
+	font-size:11px;
+	height: 300px;
+	overflow: hidden;
+	position: relative;
+	overflow-y: scroll; 
+}
+
+.double-bounce2 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+
+pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
+
+#post-status {
+
+  margin-top: 0px;
+
+}
+
