@@ -3,11 +3,13 @@ var http = require('http'),
     app = module.exports.app = express(),
     server = http.createServer(app),
     io = require('socket.io').listen(server),
-    fs = require('fs');
+    fs = require('fs'),
+    path = require('path');
 
 var bodyParser = require('body-parser'),
 	config = require('./inc/config'),
 	api = require('node-twitter-api'),
+	twitter_media = require('twitter-media'),
 	twitter = new api(config),
 	uuid = require('uuid'),
 	cookieParser = require('cookie-parser'),
@@ -115,15 +117,45 @@ router.post('/post', function(req, res,next) {
 		next();
 	}else{
 
-		twitter.uploadMedia({media:file}, req._accessToken, req._accessSecret,function(error,data){
-			if (error) {
-				log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file },'error',error);
-			} else {
-				req._media_id_string = data.media_id_string;
-			    log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file  },'ok');
-			}
-			next();
-		});
+		/* using two different modules, a little bit clunky, to fix  */
+
+		var ext = path.extname(file);
+
+		if(ext == '.mov'){
+
+			var video = fs.readFileSync(file);
+
+			var tw = new twitter_media({
+			    consumer_key: config.consumerKey,
+			    consumer_secret: config.consumerSecret,
+			    token: req._accessToken,
+			    token_secret: req._accessSecret
+			});
+
+			tw.uploadMedia('video', video,function(error,data){
+				if (error) {
+					log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file },'error',error);
+				} else {
+					req._media_id_string = data;
+				    log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file  },'ok');
+				}
+				next();
+			});
+
+		}else{
+
+			twitter.uploadMedia({media:file}, req._accessToken, req._accessSecret,function(error,data){
+				if (error) {
+					log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file },'error',error);
+				} else {
+					req._media_id_string = data.media_id_string;
+				    log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file  },'ok');
+				}
+				next();
+			});
+
+		}
+
 	}
 
 
@@ -150,7 +182,7 @@ router.post('/post', function(req, res,next) {
 router.post('/upload',function(req, res) {
 
 	var folder = Date.now();
-	var allowedformats = ['image/jpeg','image/png','image/gif'];
+	var allowedformats = ['image/jpeg','image/png','image/gif','video/quicktime'];
 
 	try {
 		fs.mkdirSync('./uploads/'+folder);

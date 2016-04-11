@@ -157,6 +157,7 @@
 
                     if(result.message == 'ok'){
 
+                        $('#last-tweet').html('');
                         twttr.widgets.createTweet(result.id,document.getElementById('last-tweet'),{align:'center'});
 
                         $('#post-status').html('<strong>Tweet has been posted succesfuly!</strong> <a href="#tweetModal" data-toggle="modal" data-target="#tweetModal">Click to view it!</a>');
