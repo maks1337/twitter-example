@@ -1,2 +1,4 @@
 backend/inc/config.js
 backend/uploads
+package.json
+node_modules

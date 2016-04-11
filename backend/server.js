@@ -1,10 +1,10 @@
 var http = require('http'),
 	express = require('express'),
-    app = module.exports.app = express(),
-    server = http.createServer(app),
-    io = require('socket.io').listen(server),
-    fs = require('fs'),
-    path = require('path');
+	app = module.exports.app = express(),
+	server = http.createServer(app),
+	io = require('socket.io').listen(server),
+	fs = require('fs'),
+	path = require('path');
 
 var bodyParser = require('body-parser'),
 	config = require('./inc/config'),
@@ -25,11 +25,11 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', config.origin);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTION');
-    res.header('Access-Control-Allow-Headers', 'Content-Type,X-File-Date,X-Requested-With,X-File-Type,X-File-Name,X-File-Size');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    next();
+	res.header('Access-Control-Allow-Origin', config.origin);
+	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTION');
+	res.header('Access-Control-Allow-Headers', 'Content-Type,X-File-Date,X-Requested-With,X-File-Type,X-File-Name,X-File-Size');
+	res.header('Access-Control-Allow-Credentials', 'true');
+	next();
 });
 
 
@@ -39,7 +39,7 @@ io.on('connection', function (socket) {
   
   var tail = spawn("tail", ["-f", config.log]);
   tail.stdout.on("data", function (data) {
-    socket.send({ tail : data.toString('utf-8') })
+	socket.send({ tail : data.toString('utf-8') })
   }); 
 
 });
@@ -108,9 +108,9 @@ router.post('/post', function(req, res,next) {
 	req._media_id_string = false;
 
 	try {
-    	fs.accessSync(file, fs.F_OK);
+		fs.accessSync(file, fs.F_OK);
 	} catch (e) {
-	    file = false;
+		file = false;
 	}
 
 	if(!file){
@@ -126,10 +126,10 @@ router.post('/post', function(req, res,next) {
 			var video = fs.readFileSync(file);
 
 			var tw = new twitter_media({
-			    consumer_key: config.consumerKey,
-			    consumer_secret: config.consumerSecret,
-			    token: req._accessToken,
-			    token_secret: req._accessSecret
+				consumer_key: config.consumerKey,
+				consumer_secret: config.consumerSecret,
+				token: req._accessToken,
+				token_secret: req._accessSecret
 			});
 
 			tw.uploadMedia('video', video,function(error,data){
@@ -137,7 +137,7 @@ router.post('/post', function(req, res,next) {
 					log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file },'error',error);
 				} else {
 					req._media_id_string = data;
-				    log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file  },'ok');
+					log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file  },'ok');
 				}
 				next();
 			});
@@ -149,7 +149,7 @@ router.post('/post', function(req, res,next) {
 					log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file },'error',error);
 				} else {
 					req._media_id_string = data.media_id_string;
-				    log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file  },'ok');
+					log.info('post-media',req._sessionInfo, { attachment: req.body.attachment,media:file  },'ok');
 				}
 				next();
 			});
@@ -170,12 +170,12 @@ router.post('/post', function(req, res,next) {
 	twitter.statuses("update",status,req._accessToken, req._accessSecret, function(error, data, response) {
 		if (error) {
 			log.info('post',req._sessionInfo, status,'error',error);
-		    res.json({ message: 'error','info':error });  
+			res.json({ message: 'error','info':error });  
 		} else {
-		    res.json({ message: 'ok',id:data.id_str,user:data.user.screen_name });  
-		    log.info('post',req._sessionInfo, status,'ok');
+			res.json({ message: 'ok',id:data.id_str,user:data.user.screen_name });  
+			log.info('post',req._sessionInfo, status,'ok');
 		}
-    });
+	});
 
 });
 
@@ -199,13 +199,13 @@ router.post('/upload',function(req, res) {
 	var target = [folder,req.headers['x-file-name']].join("/"); 
 
 	fs.writeFile('./uploads/'+target, req.body, function(err) {
-	    if(err) {
+		if(err) {
 			res.json({upload: 'error'});	
 			log.info('upload',req._sessionInfo, error,'error');
-	    }else{
-	    	log.info('upload',req._sessionInfo, target,'ok');
-	    	res.json({upload: 'ok',place:target,name:req.headers['x-file-name']});	
-	    }
+		}else{
+			log.info('upload',req._sessionInfo, target,'ok');
+			res.json({upload: 'ok',place:target,name:req.headers['x-file-name']});	
+		}
 	}); 
 
 });
